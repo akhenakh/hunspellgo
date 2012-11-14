@@ -10,10 +10,10 @@ Hunspell bidings for Golang
     import "github.com/akhenakh/hunspellgo" 
 
     h, _ := hunspellgo.Hunspell("/home/akh/dev/hunspell/fr.aff", "/home/akh/dev/hunspell/fr.dic")
-    fmt.Println(hunspellgo.Spell(h, "Bonjour"))
-    fmt.Println(hunspellgo.Spell(h, "Bonj"))
-    fmt.Println(hunspellgo.Spell(h, "bébé"))
-    hunspellgo.Destroy(h)
+    fmt.Println(h.Spell("Bonjour"))
+    fmt.Println(h.Spell("Bonj"))
+    fmt.Println(h.Spell("bébé"))
+    hunspellgo.Destroy()
     
     true
     false
