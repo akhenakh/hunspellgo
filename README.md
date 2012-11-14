@@ -13,7 +13,7 @@ Hunspell bidings for Golang
     fmt.Println(h.Spell("Bonjour"))
     fmt.Println(h.Spell("Bonj"))
     fmt.Println(h.Spell("bébé"))
-    hunspellgo.Destroy()
+    h.Destroy()
     
     true
     false
