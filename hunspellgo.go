@@ -4,18 +4,23 @@ package hunspellgo
 // #include <stdlib.h>
 // #include <stdio.h>
 // #include <hunspell/hunspell.h>
-import "C"
-import "unsafe"
-import "fmt"
+import  "C"
+import  "unsafe"
+import  "fmt"
+import  "runtime"
 
-func Hunspell(affpath string, dpath string) (*Hunhandle, error) {
+func Hunspell(affpath string, dpath string) (*Hunhandle) {
 	affpathcs := C.CString(affpath)
 	defer C.free(unsafe.Pointer(affpathcs))
 	dpathcs := C.CString(dpath)
 	defer C.free(unsafe.Pointer(dpathcs))
-
-	var handle = C.Hunspell_create(affpathcs, dpathcs)
-	return &Hunhandle{handle}, nil
+  h := &Hunhandle{nil}
+	h.handle = C.Hunspell_create(affpathcs, dpathcs)
+  runtime.SetFinalizer(h, func(handle *Hunhandle) {
+    C.Hunspell_destroy(handle.handle)
+    h.handle = nil 
+  })
+	return h
 }
 
 func (handle *Hunhandle) Suggest(word string) {
@@ -37,11 +42,6 @@ func (handle *Hunhandle) Spell(word string) bool {
     return false
   }
   return true
-}
-
-func (handle *Hunhandle) Destroy() {
-  C.Hunspell_destroy(handle.handle)
-  handle.handle = nil;
 }
 
 type Hunhandle struct {
