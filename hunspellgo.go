@@ -44,16 +44,13 @@ func CStrings(x **C.char, len int) []string {
 
 	p := uintptr(unsafe.Pointer(x))
 	for i := 0; i < len; i++ {
-		p += unsafe.Sizeof(uintptr(0))
 		if sptr(p) == nil {
 			break
 		}
 		s = append(s, C.GoString(sptr(p)))
+		p += unsafe.Sizeof(uintptr(0))
 	}
 
-	// for p := uintptr(unsafe.Pointer(x)); sptr(p) != nil; p += unsafe.Sizeof(uintptr(0)) {
-	// 	s = append(s, C.GoString(sptr(p)))
-	// }
 	return s
 }
 
